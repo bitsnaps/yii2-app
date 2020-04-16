@@ -6,6 +6,7 @@
  */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $bundle = yiister\gentelella\assets\Asset::register($this);
 
@@ -37,14 +38,14 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="/" class="site_title"><i class="fa fa-paw"></i> <span><?= Yii::$app->name; ?></span></a>
+                    <a href="<?= Yii::$app->homeUrl ?>" class="site_title"><i class="fa fa-paw"></i> <span><?= Yii::$app->name; ?></span></a>
                 </div>
                 <div class="clearfix"></div>
 
                 <!-- menu prile quick info -->
                 <div class="profile">
                     <div class="profile_pic">
-                        <img src="/img/128x128.png" alt="..." class="img-circle profile_img">
+                        <?= Html::img('@web/img/128x128.png', ['alt'=>"...", 'class' => "img-circle profile_img"]); ?>
                     </div>
                     <div class="profile_info">
                         <span><?= \Yii::t('app-backend', 'Welcome');?>,</span>
@@ -64,9 +65,9 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         \yiister\gentelella\widgets\Menu::widget(
                             [
                                 "items" => [
-                                    ["label" => \Yii::t('app-backend', 'Dashboard'), "url" => "/", "icon" => "home"],
-                                    ["label" => \Yii::t('app-model', 'Users'), "url" => ["/user/admin"], "icon" => "users"],
-                                    ["label" => \Yii::t('app-model', 'Email Form'), "url" => ["/email-form/index"], "icon" => "envelope"],
+                                    ["label" => \Yii::t('app-backend', 'Dashboard'), "url" => Yii::$app->homeUrl, "icon" => "home"],
+                                    ["label" => \Yii::t('app-model', 'Users'), "url" => Url::to(["/user/admin"]), "icon" => "users"],
+                                    ["label" => \Yii::t('app-model', 'Email Form'), "url" => Url::to(["/email-form/index"]), "icon" => "envelope"],
                                     [
                                         "label" => \Yii::t('app-backend', 'Admin'),
                                         "url" => "#",
@@ -125,14 +126,14 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                                aria-expanded="false">
-                                <img src="/img/128x128.png" alt=""><?= (Yii::$app->user->isGuest)? \Yii::t('app-backend', 'Guest'):Yii::$app->user->identity->username; ?>
+                                <?= Html::img('@web/img/128x128.png', ['alt'=>""]); ?><?= (Yii::$app->user->isGuest)? \Yii::t('app-backend', 'Guest'):Yii::$app->user->identity->username; ?>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href="/user/admin/update-profile?id=1"><?= \Yii::t('app-model', 'Profile');?></a>
+                                <li><a href="<?= Url::to(['/user/admin/update-profile','id'=>1]) ?>"><?= \Yii::t('app-model', 'Profile');?></a>
                                 </li>
                                 <li>
-                                    <a href="/user/security/logout" data-method="post">
+                                    <a href="<?= Url::to(['/user/security/logout']) ?>" data-method="post">
                                         <i class="fa fa-sign-out pull-right"></i>
                                         <?= \Yii::t('app-model', 'Log out');?>
                                     </a>
@@ -177,7 +178,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                                 </li>
                                 <li>
                                     <div class="text-center">
-                                        <a href="/">
+                                        <a href="#">
                                             <strong>See All Alerts</strong>
                                             <i class="fa fa-angle-right"></i>
                                         </a>

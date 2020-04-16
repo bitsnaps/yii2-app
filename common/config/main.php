@@ -12,8 +12,10 @@ return [
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
             'nullDisplay' => '-',
-            'defaultTimeZone' => 'Europe/Moscow',
-            'locale' => 'ru-RU',
+            // 'defaultTimeZone' => 'Europe/Moscow',
+            'defaultTimeZone' => 'Europe/Paris',
+            // 'locale' => 'ru-RU',
+            'locale' => 'en-US',
             'thousandSeparator' => ' ',
             'decimalSeparator' => '.',
             // must enable php intl extension for \NumberFormatter
@@ -50,10 +52,14 @@ return [
         ],
         'i18n' => [
             'translations' => [
-                'app*' => [
+                '*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',
                 ],
+                // 'app*' => [
+                //     'class' => 'yii\i18n\PhpMessageSource',
+                //     'basePath' => '@common/messages',
+                // ],
                 'giiant' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                 ],

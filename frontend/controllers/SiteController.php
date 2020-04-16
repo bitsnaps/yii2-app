@@ -6,12 +6,16 @@ use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 
+use frontend\models\ContactForm;
+use common\models\LoginForm;
+use common\models\User;
+
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
-    
+
     /**
      * {@inheritdoc}
      */
@@ -36,7 +40,49 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
-    }    
+    }
+
+    /**
+     * Login
+     *
+     * @return mixed
+     */
+     public function actionLogin()
+     {
+         if (!Yii::$app->user->isGuest) {
+             return $this->goHome();
+         }
+
+         $model = new LoginForm();
+         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+             return $this->goBack();
+         } else {
+             $model->password = '';
+
+             return $this->render('login', ['model' => $model]);
+         }
+     }
+
+     /**
+      * Sign up (need more update...)
+      *
+      * @return mixed
+      */
+      public function actionSignup()
+      {
+          if (!Yii::$app->user->isGuest) {
+              return $this->goHome();
+          }
+
+          $model = new User();
+          if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            // do Signup
+              return $this->goBack();
+          } else {
+              $model->password = '';
+              return $this->render('signup', ['model' => $model]);
+          }
+      }
 
     /**
      * Displays contact page.

@@ -16,7 +16,8 @@ return [
     'sourcePath' => '@common/../',
     'messagePath' => '@common/messages',
     'languages' => [
-        'ru-RU',
+        // 'ru-RU',
+        'en-US',
     ],
     'translator' => 'Yii::t',
     'sort' => false,
