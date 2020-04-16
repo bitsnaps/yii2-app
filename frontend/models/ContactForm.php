@@ -19,11 +19,11 @@ use yii\base\Model;
  */
 class ContactForm extends Model
 {
+    public $name;
     public $email;
     public $phone;
     public $message;
     public $verifyCode;
-
 
     /**
      * @inheritdoc
@@ -31,13 +31,14 @@ class ContactForm extends Model
     public function rules()
     {
         return [
-            ['email', 'required', 'on' => 'contact'],
+            // ['name',  'email', 'required', 'on' => 'contact'],
+            [['name', 'email'], 'required'],
             ['phone', 'required', 'on' => 'callback'],
             [['message'], 'required'],
             [['email', 'message', 'phone'], 'filter', 'filter' => 'strip_tags'],
             ['email', 'email'],
-            [['message'], 'string', 'min' => 25, 'on' => 'contact'],
-            [['message'], 'string', 'min' => 5, 'on' => 'callback'],
+            [['message'], 'string', 'min' => 25 /*, 'on' => 'contact'*/],
+            // [['message'], 'string', 'min' => 5, 'on' => 'callback'],
             ['phone', 'string', 'min' => 10],
             [['verifyCode'], ReCaptchaValidator::class]
 
@@ -50,6 +51,7 @@ class ContactForm extends Model
     public function attributeLabels()
     {
         return [
+            'name' => Yii::t('frontend', 'Name'),
             'phone' => Yii::t('app-model', 'Phone'),
             'message' => Yii::t('app-model', 'Message'),
             'verifyCode' => Yii::t('app-model', 'Verification Code')
@@ -59,13 +61,13 @@ class ContactForm extends Model
     /**
      * @return array
      */
-    public function scenarios()
+    /*public function scenarios()
     {
         $scenarios = parent::scenarios();
         $scenarios['contact'] = ['email', 'message', 'phone', 'verifyCode'];
         $scenarios['callback'] = ['email', 'message', 'phone', 'verifyCode'];
         return $scenarios;
-    }
+    }*/
 
     /**
      * Sends an email to the specified email address using the information collected by this model.
@@ -81,21 +83,21 @@ class ContactForm extends Model
             $contact_form->user_id= Yii::$app->user->id;
 
         $this->message= $this->message. '
-        
+
         Email: '.$this->email . '
         '.Yii::t('app-model', 'Phone').': '.$this->phone;
 
         $contact_form->textBody=$this->message;
         $contact_form->subject="From contacts Page";
         $contact_form->setToEmail=$this->email? $this->email: Yii::$app->params['adminEmail'];
-        $contact_form->setToName=$this->email? $this->email: Yii::$app->params['adminEmail'];
+        $contact_form->setToName=$this->name? $this->name: Yii::$app->params['adminEmail'];
         $contact_form->setFromEmail=Yii::$app->params['supportEmail'];
         $contact_form->setFromName=Yii::$app->name;
         $contact_form->save();
 
         $result = Yii::$app->mailer->compose()
             ->setTo($email)
-            ->setFrom([Yii::$app->params['supportEmail'] => 'С контактов'])
+            ->setFrom([Yii::$app->params['supportEmail'] => $this->name])
             ->setSubject(Yii::$app->name)
             ->setTextBody($this->message)
             ->send();
@@ -119,8 +121,8 @@ class ContactForm extends Model
      *
      * @param $message
      * @return bool
-     *
-    public function sendViber($message) {
+     */
+    /*public function sendViber($message) {
         $settings = Yii::$app->settings;
         $apiKey = $settings->get('ViberForm', 'apiKey');
         $finance_list = explode(';',$settings->get('ViberForm', 'finance'));
@@ -160,4 +162,5 @@ class ContactForm extends Model
             return false;
         }
     }*/
+
 }
